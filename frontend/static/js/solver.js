@@ -821,6 +821,6 @@ const banner = document.getElementById('active-clue-banner');
 if (banner && window.matchMedia('(max-width: 750px)').matches) {
   banner.addEventListener('click', () => {
     banner.classList.toggle('expanded');
-    document.querySelector('.solver-layout').classList.toggle('clue-panel-mobile-expanded');
+    document.getElementById('clue-panel').classList.toggle('mobile-visible');
   });
 }

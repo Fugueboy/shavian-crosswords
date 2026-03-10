@@ -434,6 +434,11 @@
   .solver-layout { flex-direction: column; }
 
   .clue-panel {
+    display: none;
+  }
+
+  .clue-panel.mobile-visible {
+    display: block;
     width: 100%;
     border-right: none;
     border-top: 1px solid var(--rule);
@@ -441,9 +446,9 @@
     padding: 0.8rem;
   }
 
-  .clue-item { font-size: 0.78rem; }
-
   .grid-panel { padding: 0.5rem; }
+
+  .clue-item { font-size: 0.78rem; }
 
   .kb-key { width: 2rem; height: 2rem; font-size: 1rem; }
 }
