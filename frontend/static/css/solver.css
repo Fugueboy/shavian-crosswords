@@ -427,15 +427,22 @@
 
 /* Mobile layout */
 @media (max-width: 750px) {
-  .solver-page { overflow: auto; height: auto; min-height: 100vh; }
-  .solver-main { overflow: visible; }
+  .active-clue-banner { order: 2; }
+  .solver-main        { order: 3; }
+  .solver-toolbar     { order: 1; }
+
   .solver-layout { flex-direction: column; }
 
   .clue-panel {
-    display: none;
+    width: 100%;
+    border-right: none;
+    border-top: 1px solid var(--rule);
+    max-height: 220px;
+    overflow-y: auto;
+    padding: 0.8rem;
   }
 
-  .grid-panel { padding: 0.5rem; }
+  .grid-panel { flex-shrink: 0; padding: 0.5rem; }
   .clue-item { font-size: 0.78rem; }
   .kb-key { width: 2rem; height: 2rem; font-size: 1rem; }
 }
