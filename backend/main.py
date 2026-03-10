@@ -8,7 +8,10 @@ import json
 import os
 import secrets
 from datetime import datetime
-from parser import parse_crossword_xml
+try:
+    from backend.parser import parse_crossword_xml
+except ImportError:
+    from parser import parse_crossword_xml
 
 app = FastAPI(title="Shavian Crosswords")
 
