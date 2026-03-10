@@ -428,28 +428,15 @@
 /* Mobile layout */
 @media (max-width: 750px) {
   .solver-page { overflow: auto; height: auto; min-height: 100vh; }
-
   .solver-main { overflow: visible; }
-
   .solver-layout { flex-direction: column; }
 
   .clue-panel {
     display: none;
   }
 
-  .clue-panel.mobile-visible {
-    display: block;
-    width: 100%;
-    border-right: none;
-    border-top: 1px solid var(--rule);
-    max-height: 220px;
-    padding: 0.8rem;
-  }
-
   .grid-panel { padding: 0.5rem; }
-
   .clue-item { font-size: 0.78rem; }
-
   .kb-key { width: 2rem; height: 2rem; font-size: 1rem; }
 }
 
