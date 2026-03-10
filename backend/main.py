@@ -74,6 +74,10 @@ def require_admin(credentials: HTTPBasicCredentials = Depends(security)):
 # API routes
 # ---------------------------------------------------------------------------
 
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
 @app.get("/api/crosswords")
 def list_crosswords(db: sqlite3.Connection = Depends(get_db)):
     rows = db.execute(
