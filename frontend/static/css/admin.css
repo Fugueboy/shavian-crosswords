@@ -1,0 +1,125 @@
+/* admin.css */
+
+.admin-main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.admin-card {
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.admin-card h2 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  color: var(--ink);
+}
+
+.hint {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  margin-bottom: 1.4rem;
+}
+
+/* Upload zone */
+.upload-zone {
+  border: 2px dashed var(--rule);
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  text-align: center;
+  margin-bottom: 1.2rem;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: pointer;
+}
+.upload-zone.drag-over {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.upload-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+.upload-icon { font-size: 2rem; }
+.upload-hint { font-size: 0.78rem; color: var(--ink-muted); }
+
+.upload-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+.file-icon { font-size: 1.3rem; color: #2e7d32; }
+
+.upload-status {
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  min-height: 1.4em;
+}
+.upload-status.success { color: #2e7d32; }
+.upload-status.error   { color: var(--accent); }
+
+/* Table */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+.admin-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid var(--rule);
+}
+.admin-table td {
+  padding: 0.7rem 0.75rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-table tr:hover td { background: var(--paper); }
+
+.loading-cell { text-align: center; color: var(--ink-muted); padding: 2rem !important; }
+
+.type-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+.type-badge.block { background: var(--paper-dark); color: var(--ink-muted); }
+.type-badge.bar   { background: var(--accent-bg); color: var(--accent); }
+
+.btn-delete {
+  background: none;
+  border: 1px solid transparent;
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius);
+  transition: all 0.15s;
+}
+.btn-delete:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-bg); }

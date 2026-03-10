@@ -1,0 +1,500 @@
+/* ============================================================
+   solver.css — crossword solving interface
+   ============================================================ */
+
+/* Layout */
+.solver-page { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+.active-clue-banner {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.55rem 1.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  min-height: 2.4rem;
+  flex-shrink: 0;
+}
+.clue-num  { font-weight: 700; color: var(--accent-lt); min-width: 1.8rem; }
+.clue-dir  { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-right: 0.2rem; }
+.clue-text { font-family: var(--font-shavian); font-size: 1rem; }
+
+.solver-main {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.solver-layout {
+  display: flex;
+  flex-direction: row-reverse;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Grid panel */
+.grid-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  padding: 1rem;
+  background: var(--paper);
+}
+
+.grid-container {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+}
+
+/* Individual cells */
+.xw-grid {
+  display: grid;
+  outline: 2px solid var(--ink);
+  user-select: none;
+}
+
+.xw-cell {
+  position: relative;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  background: white;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.xw-cell.block {
+  background: var(--ink);
+  cursor: default;
+  border-color: var(--ink);
+}
+
+/* Bar grid: thick borders instead of blocks */
+.xw-cell.bar-top    { border-top: 3px solid var(--ink); }
+.xw-cell.bar-right  { border-right: 3px solid var(--ink); }
+.xw-cell.bar-bottom { border-bottom: 3px solid var(--ink); }
+.xw-cell.bar-left   { border-left: 3px solid var(--ink); }
+
+/* Cell states */
+.xw-cell.active {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.xw-cell.active .cell-letter { color: white; }
+.xw-cell.active .cell-num    { color: rgba(255,255,255,0.7); }
+
+.xw-cell.in-word {
+  background: var(--highlight);
+}
+
+.xw-cell.wrong {
+  background: var(--wrong);
+}
+.xw-cell.correct {
+  background: var(--correct);
+}
+.xw-cell.revealed {
+  background: var(--revealed);
+}
+
+/* Cell number */
+.cell-num {
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  font-size: 0.55em;
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--ink-soft);
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Cell letter */
+.cell-letter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-shavian);
+  font-size: 0.62em;
+  color: var(--ink);
+  pointer-events: none;
+  padding-top: 0.15em;
+}
+
+/* Clue panel */
+.clue-panel {
+  width: 300px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  border-right: 1px solid var(--rule);
+  background: var(--paper);
+  padding: 1.2rem 1rem;
+}
+
+.clue-section { margin-bottom: 1.8rem; }
+
+.clue-heading {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.clue-list { list-style: none; }
+
+.clue-item {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.82rem;
+  transition: background 0.1s;
+  line-height: 1.4;
+}
+.clue-item:hover { background: var(--paper-dark); }
+.clue-item.active-clue {
+  background: var(--accent-bg);
+  outline: 1px solid var(--accent);
+}
+.clue-item.solved-clue { color: var(--ink-muted); }
+
+.clue-item-num {
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 1.8rem;
+  flex-shrink: 0;
+}
+.clue-item-text {
+  font-family: var(--font-shavian);
+  flex: 1;
+}
+.clue-item-fmt {
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  flex-shrink: 0;
+}
+
+/* Toolbar */
+.solver-toolbar {
+  border-top: 1px solid var(--rule);
+  background: white;
+  padding: 0.5rem 1rem;
+  flex-shrink: 0;
+}
+
+.toolbar-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.toolbar-group {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.toolbar-group:not(:last-child)::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 24px;
+  background: var(--rule);
+  margin-left: 0.2rem;
+}
+
+/* Reveal dropdown */
+.reveal-dropdown { position: relative; }
+.reveal-menu {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  min-width: 140px;
+  z-index: 200;
+  overflow: hidden;
+}
+.reveal-item {
+  display: block;
+  width: 100%;
+  padding: 0.55rem 1rem;
+  text-align: left;
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.reveal-item:hover { background: var(--accent-bg); }
+
+/* Shavian keyboard */
+.shavian-keyboard {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--paper-dark);
+  border-top: 2px solid var(--rule);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+  z-index: 300;
+  padding: 0.5rem;
+}
+
+.kb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.3rem 0.4rem;
+}
+.kb-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.kb-layout-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.kb-layout-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  min-width: 7rem;
+  text-align: center;
+}
+.kb-layout-btn {
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  color: var(--ink-muted);
+  padding: 0.1rem 0.35rem;
+  line-height: 1;
+}
+.kb-layout-btn:hover { background: var(--accent-bg); }
+.kb-close {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--ink-muted);
+  padding: 0 0.3rem;
+}
+
+.kb-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.kb-row {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.kb-key {
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  width: 2.4rem;
+  height: 2.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 0.25rem;
+  gap: 0;
+  cursor: pointer;
+  transition: background 0.1s, transform 0.08s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  color: var(--ink);
+}
+.kb-hint {
+  font-family: var(--font-body);
+  font-size: 0.55rem;
+  color: var(--ink-muted);
+  line-height: 1;
+  margin-bottom: 0.05rem;
+}
+.kb-char {
+  font-family: var(--font-shavian);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.kb-key:active { background: var(--accent-bg); transform: scale(0.94); }
+.kb-backspace {
+  width: 3.5rem;
+  height: 2.4rem;
+  font-size: 1rem;
+  background: var(--paper-dark);
+  border-color: var(--rule);
+  padding-bottom: 0;
+  justify-content: center;
+}
+
+.kb-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.3rem;
+}
+
+/* Solved overlay */
+.solved-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26,18,8,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+}
+.solved-overlay[hidden] {
+  display: none;
+}
+.solved-box {
+  background: white;
+  border-radius: 8px;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  max-width: 360px;
+  width: 90%;
+}
+.solved-shavian {
+  font-family: var(--font-shavian);
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+.solved-english {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  color: var(--ink-soft);
+}
+
+/* Puzzle header */
+.puzzle-meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.2;
+}
+.puzzle-title {
+  font-family: var(--font-shavian);
+  font-size: 1.05rem;
+  color: var(--paper);
+}
+.puzzle-byline {
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+}
+
+.header-actions { display: flex; gap: 0.5rem; }
+
+/* Mobile layout */
+@media (max-width: 750px) {
+  .solver-layout { flex-direction: column; }
+
+  .clue-panel {
+    width: 100%;
+    border-right: none;
+    border-top: 1px solid var(--rule);
+    max-height: 220px;
+    padding: 0.8rem;
+  }
+
+  .clue-item { font-size: 0.78rem; }
+
+  .grid-panel { padding: 0.5rem; }
+
+  .kb-key { width: 2rem; height: 2rem; font-size: 1rem; }
+}
+
+/* ── Pencil mode ──────────────────────────────────────────────────────────── */
+.cell-letter.pencil {
+  color: #5b8dd9;
+  font-style: italic;
+}
+
+.xw-cell.pencilled {
+  background: #f0f5ff;
+}
+
+/* ── Timer ────────────────────────────────────────────────────────────────── */
+.timer-widget {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.7);
+}
+
+#timer-display {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--paper);
+  min-width: 3rem;
+  text-align: center;
+}
+
+.btn-timer { font-size: 0.75rem; padding: 0.15rem 0.4rem; }
+
+/* ── Pencil toggle button ─────────────────────────────────────────────────── */
+#btn-pencil.active {
+  background: #5b8dd9;
+  color: white;
+  border-color: #5b8dd9;
+}
+
+/* ── Mobile clue banner — tap to expand ──────────────────────────────────── */
+@media (max-width: 750px) {
+  .active-clue-banner {
+    cursor: pointer;
+    user-select: none;
+  }
+  .active-clue-banner::after {
+    content: ' ▾';
+    font-size: 0.7rem;
+    color: var(--ink-muted);
+  }
+  .active-clue-banner.expanded::after {
+    content: ' ▴';
+  }
+  .clue-panel-mobile-expanded .clue-panel {
+    display: block !important;
+    max-height: 40vh;
+    overflow-y: auto;
+  }
+}

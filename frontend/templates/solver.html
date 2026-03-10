@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Puzzle · Shavian Crosswords</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Shavian&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/main.css">
+  <link rel="stylesheet" href="/static/css/solver.css">
+</head>
+<body class="solver-page">
+<header class="site-header"><div class="header-inner">
+  <a href="/" class="back-link">← All Puzzles</a>
+  <div class="puzzle-meta" id="puzzle-meta">
+    <span id="puzzle-title" class="puzzle-title"></span>
+    <span id="puzzle-byline" class="puzzle-byline"></span>
+  </div>
+  <div class="header-actions">
+    <div class="timer-widget">
+      <span id="timer-display">00:00</span>
+      <button class="btn btn-ghost btn-timer" id="btn-timer-toggle" title="Start/pause timer">▶</button>
+      <button class="btn btn-ghost btn-timer" id="btn-timer-reset" title="Reset timer">↺</button>
+    </div>
+    <button id="btn-pencil" class="btn btn-ghost" title="Switch to pencil mode">✏️</button>
+    <button id="btn-kb-toggle" class="btn btn-ghost" title="Toggle Shavian keyboard">⌨</button>
+  </div>
+</div></header>
+<div class="active-clue-banner" id="active-clue-banner">
+  <span class="clue-num" id="banner-num"></span>
+  <span class="clue-dir" id="banner-dir"></span>
+  <span class="clue-text" id="banner-text">Select a cell to begin</span>
+</div>
+<main class="solver-main" id="solver-main"><div class="solver-layout">
+  <section class="grid-panel"><div class="grid-container" id="grid-container"></div></section>
+  <aside class="clue-panel" id="clue-panel">
+    <div class="clue-section"><h3 class="clue-heading">Across</h3><ol class="clue-list" id="clues-across"></ol></div>
+    <div class="clue-section"><h3 class="clue-heading">Down</h3><ol class="clue-list" id="clues-down"></ol></div>
+  </aside>
+</div></main>
+<div class="solver-toolbar"><div class="toolbar-inner">
+  <div class="toolbar-group">
+    <button class="btn btn-check" id="btn-check-word">Check Word</button>
+    <button class="btn btn-check" id="btn-check-all">Check All</button>
+  </div>
+  <div class="toolbar-group">
+    <div class="reveal-dropdown">
+      <button class="btn btn-reveal" id="btn-reveal-toggle">Reveal ▾</button>
+      <div class="reveal-menu" id="reveal-menu" hidden>
+        <button class="reveal-item" id="btn-reveal-cell">Reveal Cell</button>
+        <button class="reveal-item" id="btn-reveal-word">Reveal Word</button>
+        <button class="reveal-item" id="btn-reveal-all">Reveal All</button>
+      </div>
+    </div>
+  </div>
+  <div class="toolbar-group">
+    <button class="btn btn-clear" id="btn-clear">Clear All</button>
+  </div>
+</div></div>
+<div class="shavian-keyboard" id="shavian-keyboard" hidden>
+  <div class="kb-header">
+    <span class="kb-title">Shavian</span>
+    <div class="kb-layout-switcher">
+      <button class="kb-layout-btn" id="kb-layout-prev">◀</button>
+      <span class="kb-layout-label" id="kb-layout-label">Shaw Imperial</span>
+      <button class="kb-layout-btn" id="kb-layout-next">▶</button>
+    </div>
+    <button class="kb-close" id="kb-close">✕</button>
+  </div>
+  <div class="kb-rows" id="kb-rows"></div>
+  <div class="kb-footer">
+    <button class="kb-key kb-backspace" data-action="backspace">⌫</button>
+  </div>
+</div>
+<div class="solved-overlay" id="solved-overlay" hidden>
+  <div class="solved-box">
+    <div class="solved-shavian">𐑞 𐑐𐑳𐑟𐑩𐑤</div>
+    <div class="solved-english">Puzzle solved!</div>
+    <button class="btn btn-primary" onclick="document.getElementById('solved-overlay').hidden=true">Continue</button>
+  </div>
+</div>
+<script src="/static/js/solver.js"></script>
+</body>
+</html>

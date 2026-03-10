@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · Shavian Crosswords</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Shavian&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/main.css">
+<link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body class="admin-page">
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="back-link">← Home</a>
+    <span class="admin-badge">Admin</span>
+  </div>
+</header>
+
+<main class="admin-main">
+
+  <section class="admin-card">
+    <h2>Upload New Crossword</h2>
+    <p class="hint">Upload a Crossword Compiler XML file (.xml). Both blocked and bar grid styles are supported.</p>
+
+    <div class="upload-zone" id="upload-zone">
+      <input type="file" id="file-input" accept=".xml" hidden>
+      <div class="upload-prompt" id="upload-prompt">
+        <span class="upload-icon">📄</span>
+        <span>Drop an XML file here, or <button class="link-btn" id="browse-btn">browse</button></span>
+        <span class="upload-hint">Crossword Compiler .xml only</span>
+      </div>
+      <div class="upload-preview" id="upload-preview" hidden>
+        <span class="file-icon">✓</span>
+        <span id="file-name"></span>
+        <button class="link-btn" id="clear-file-btn">Remove</button>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" id="upload-btn" disabled>Upload Crossword</button>
+    <div class="upload-status" id="upload-status"></div>
+  </section>
+
+  <section class="admin-card">
+    <h2>Manage Crosswords</h2>
+    <div id="crossword-table-wrap">
+      <table class="admin-table" id="crossword-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Published</th>
+            <th>Size</th>
+            <th>Type</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="crossword-tbody">
+          <tr><td colspan="6" class="loading-cell">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<script src="/static/js/admin.js"></script>
+</body>
+</html>

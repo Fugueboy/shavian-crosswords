@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>𐑖𐑱𐑝𐑾𐑯 · Shavian Crosswords</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Shavian&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body class="home-page">
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-title">
+      <span class="shavian-title">𐑖𐑱𐑝𐑾𐑯</span>
+      <span class="subtitle">Crosswords</span>
+    </div>
+    <nav>
+      <a href="/admin" class="admin-link">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main class="home-main">
+
+  <section class="featured-section" id="featured">
+    <h2 class="section-label">Latest Puzzle</h2>
+    <div id="featured-puzzle" class="featured-card skeleton">
+      <div class="skeleton-line wide"></div>
+      <div class="skeleton-line narrow"></div>
+    </div>
+  </section>
+
+  <section class="archive-section" id="archive">
+    <h2 class="section-label">All Puzzles</h2>
+    <div id="puzzle-list" class="puzzle-list">
+      <!-- populated by JS -->
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <span>Written in the <a href="https://www.shavian.info/" target="_blank">Shavian alphabet</a></span>
+</footer>
+
+<script src="/static/js/home.js"></script>
+</body>
+</html>
