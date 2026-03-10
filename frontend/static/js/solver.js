@@ -8,19 +8,11 @@
 const LAYOUT_SHAW = {
   name: 'Shaw Imperial',
   rows: [
-    // Number row (unshifted): 1–0 = 𐑩𐑳𐑪𐑴𐑖𐑗𐑘𐑙𐑚𐑛  (Keyman Shaw unshifted digits)
-    [['1','𐑩'],['2','𐑳'],['3','𐑪'],['4','𐑴'],['5','𐑖'],['6','𐑗'],['7','𐑘'],['8','𐑙'],['9','𐑚'],['0','𐑛']],
-    // Number row (shifted): !@#$%^&*() = 𐑫𐑵𐑬𐑶𐑭𐑷𐑮𐑯𐑜𐑝
-    [['!','𐑫'],['@','𐑵'],['#','𐑬'],['$','𐑶'],['%','𐑭'],['^','𐑷'],['&','𐑮'],['*','𐑯'],['(','𐑜'],[')','𐑝']],
-    // Top letter row: q–p = 𐑐𐑱𐑑𐑲𐑒𐑣𐑓𐑤𐑔𐑥
-    [['q','𐑐'],['w','𐑱'],['e','𐑑'],['r','𐑲'],['t','𐑒'],['y','𐑣'],['u','𐑓'],['i','𐑤'],['o','𐑔'],['p','𐑥']],
-    // Top row shifted: Q–P = 𐑞𐑿𐑟𐑾𐑠𐑽𐑡𐑼𐑢𐑻
-    [['Q','𐑞'],['W','𐑿'],['E','𐑟'],['R','𐑾'],['T','𐑠'],['Y','𐑽'],['U','𐑡'],['I','𐑼'],['O','𐑢'],['P','𐑻']],
-    // Home row: a–; = 𐑕𐑦𐑖𐑧𐑗𐑨𐑘𐑸𐑙𐑹
-    [['a','𐑕'],['s','𐑦'],['d','𐑖'],['f','𐑧'],['g','𐑗'],['h','𐑨'],['j','𐑘'],['k','𐑸'],['l','𐑙'],[';','𐑹']],
-    // Home row shifted: A–: = 𐑺𐑻𐑼𐑽𐑾𐑿 ...
-    // Bottom row: z–/ = 𐑛𐑰𐑜𐑱𐑝𐑲𐑞𐑳
-    [['z','𐑛'],['x','𐑰'],['c','𐑜'],['v','𐑱'],['b','𐑝'],['n','𐑲'],['m','𐑞'],[',','𐑳']],
+    [[null,'𐑶'],[null,'𐑬'],[null,'𐑫'],[null,'𐑜'],[null,'𐑖'],[null,'𐑗'],[null,'𐑙'],[null,'𐑘'],[null,'𐑡'],[null,'𐑔']],
+    [[null,'𐑭'],[null,'𐑷'],[null,'𐑵'],[null,'𐑱'],[null,'𐑳'],[null,'𐑓'],[null,'𐑞'],[null,'𐑤'],[null,'𐑥'],[null,'𐑣']],
+    [[null,'𐑪'],[null,'𐑨'],[null,'𐑦'],[null,'𐑩'],[null,'𐑧'],[null,'𐑐'],[null,'𐑯'],[null,'𐑑'],[null,'𐑮'],[null,'𐑕']],
+    [[null,'𐑾'],[null,'𐑲'],[null,'𐑴'],[null,'𐑰'],[null,'𐑚'],[null,'𐑝'],[null,'𐑟'],[null,'𐑒'],[null,'𐑢'],[null,'𐑛']],
+    [[null,'𐑸'],[null,'𐑹'],[null,'𐑿'],[null,'𐑺'],[null,'𐑻'],[null,'𐑼'],[null,'𐑽']],
   ]
 };
 
@@ -330,7 +322,11 @@ function updateClueHighlight() {
   const li = document.querySelector(`.clue-item[data-wid="${wordId}"]`);
   if (li) {
     li.classList.add('active-clue');
-    li.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    // Only scroll clue into view on desktop — on mobile the clue panel is
+    // hidden and scrollIntoView causes the page to jerk
+    if (window.innerWidth > 750) {
+      li.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
   }
 }
 
