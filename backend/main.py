@@ -3,11 +3,11 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-import sqlite3
 import json
 import os
 import secrets
 from datetime import datetime
+
 try:
     from backend.parser import parse_crossword_xml
 except ImportError:
@@ -24,43 +24,58 @@ app.add_middleware(
 
 security = HTTPBasic()
 
-DB_PATH = os.environ.get("DB_PATH", "crosswords.db")
-ADMIN_USER = os.environ.get("ADMIN_USER", "admin")
-ADMIN_PASS = os.environ.get("ADMIN_PASS", "shavian")
+DATABASE_URL = os.environ.get("DATABASE_URL")
+DB_PATH      = os.environ.get("DB_PATH", "crosswords.db")
+ADMIN_USER   = os.environ.get("ADMIN_USER", "admin")
+ADMIN_PASS   = os.environ.get("ADMIN_PASS", "shavian")
 
-# ---------------------------------------------------------------------------
-# Database
-# ---------------------------------------------------------------------------
+USE_POSTGRES = bool(DATABASE_URL)
 
-def get_db():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    try:
-        yield conn
-    finally:
-        conn.close()
+def get_conn():
+    if USE_POSTGRES:
+        import psycopg2
+        import psycopg2.extras
+        conn = psycopg2.connect(DATABASE_URL)
+        return conn
+    else:
+        import sqlite3
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        return conn
 
 def init_db():
-    conn = sqlite3.connect(DB_PATH)
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS crosswords (
-            id        INTEGER PRIMARY KEY AUTOINCREMENT,
-            title     TEXT    NOT NULL,
-            author    TEXT,
-            published TEXT    NOT NULL,
-            width     INTEGER NOT NULL,
-            height    INTEGER NOT NULL,
-            data      TEXT    NOT NULL   -- full JSON blob
-        )
-    """)
-    conn.commit()
+    conn = get_conn()
+    if USE_POSTGRES:
+        cur = conn.cursor()
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS crosswords (
+                id        SERIAL PRIMARY KEY,
+                title     TEXT    NOT NULL,
+                author    TEXT,
+                published TEXT    NOT NULL,
+                width     INTEGER NOT NULL,
+                height    INTEGER NOT NULL,
+                data      TEXT    NOT NULL
+            )
+        """)
+        conn.commit()
+        cur.close()
+    else:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS crosswords (
+                id        INTEGER PRIMARY KEY AUTOINCREMENT,
+                title     TEXT    NOT NULL,
+                author    TEXT,
+                published TEXT    NOT NULL,
+                width     INTEGER NOT NULL,
+                height    INTEGER NOT NULL,
+                data      TEXT    NOT NULL
+            )
+        """)
+        conn.commit()
     conn.close()
 
 init_db()
-
-# ---------------------------------------------------------------------------
-# Auth
-# ---------------------------------------------------------------------------
 
 def require_admin(credentials: HTTPBasicCredentials = Depends(security)):
     ok_user = secrets.compare_digest(credentials.username, ADMIN_USER)
@@ -73,29 +88,48 @@ def require_admin(credentials: HTTPBasicCredentials = Depends(security)):
         )
     return credentials.username
 
-# ---------------------------------------------------------------------------
-# API routes
-# ---------------------------------------------------------------------------
-
 @app.get("/health")
 async def health():
     return {"status": "ok"}
 
 @app.get("/api/crosswords")
-def list_crosswords(db: sqlite3.Connection = Depends(get_db)):
-    rows = db.execute(
-        "SELECT id, title, author, published, width, height FROM crosswords ORDER BY published DESC"
-    ).fetchall()
-    return [dict(r) for r in rows]
+def list_crosswords():
+    conn = get_conn()
+    try:
+        if USE_POSTGRES:
+            import psycopg2.extras
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            cur.execute("SELECT id, title, author, published, width, height FROM crosswords ORDER BY published DESC")
+            rows = cur.fetchall()
+            cur.close()
+            return [dict(r) for r in rows]
+        else:
+            rows = conn.execute(
+                "SELECT id, title, author, published, width, height FROM crosswords ORDER BY published DESC"
+            ).fetchall()
+            return [dict(r) for r in rows]
+    finally:
+        conn.close()
 
 @app.get("/api/crosswords/{cid}")
-def get_crossword(cid: int, db: sqlite3.Connection = Depends(get_db)):
-    row = db.execute("SELECT * FROM crosswords WHERE id = ?", (cid,)).fetchone()
-    if not row:
-        raise HTTPException(404, "Crossword not found")
-    result = dict(row)
-    result["data"] = json.loads(result["data"])
-    return result
+def get_crossword(cid: int):
+    conn = get_conn()
+    try:
+        if USE_POSTGRES:
+            import psycopg2.extras
+            cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            cur.execute("SELECT * FROM crosswords WHERE id = %s", (cid,))
+            row = cur.fetchone()
+            cur.close()
+        else:
+            row = conn.execute("SELECT * FROM crosswords WHERE id = ?", (cid,)).fetchone()
+        if not row:
+            raise HTTPException(404, "Crossword not found")
+        result = dict(row)
+        result["data"] = json.loads(result["data"])
+        return result
+    finally:
+        conn.close()
 
 @app.post("/api/crosswords", dependencies=[Depends(require_admin)])
 async def upload_crossword(file: UploadFile = File(...)):
@@ -105,27 +139,43 @@ async def upload_crossword(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(400, f"Failed to parse XML: {e}")
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_conn()
     try:
-        conn.execute(
-            "INSERT INTO crosswords (title, author, published, width, height, data) VALUES (?,?,?,?,?,?)",
-            (
-                puzzle["title"],
-                puzzle["author"],
-                datetime.utcnow().isoformat(),
-                puzzle["width"],
-                puzzle["height"],
-                json.dumps(puzzle),
-            ),
-        )
-        conn.commit()
+        if USE_POSTGRES:
+            cur = conn.cursor()
+            cur.execute(
+                "INSERT INTO crosswords (title, author, published, width, height, data) VALUES (%s,%s,%s,%s,%s,%s)",
+                (puzzle["title"], puzzle["author"], datetime.utcnow().isoformat(),
+                 puzzle["width"], puzzle["height"], json.dumps(puzzle)),
+            )
+            conn.commit()
+            cur.close()
+        else:
+            conn.execute(
+                "INSERT INTO crosswords (title, author, published, width, height, data) VALUES (?,?,?,?,?,?)",
+                (puzzle["title"], puzzle["author"], datetime.utcnow().isoformat(),
+                 puzzle["width"], puzzle["height"], json.dumps(puzzle)),
+            )
+            conn.commit()
     finally:
         conn.close()
     return {"status": "ok", "title": puzzle["title"]}
 
-# ---------------------------------------------------------------------------
-# Serve frontend
-# ---------------------------------------------------------------------------
+@app.delete("/api/crosswords/{cid}", dependencies=[Depends(require_admin)])
+def delete_crossword(cid: int):
+    conn = get_conn()
+    try:
+        if USE_POSTGRES:
+            cur = conn.cursor()
+            cur.execute("DELETE FROM crosswords WHERE id = %s", (cid,))
+            conn.commit()
+            cur.close()
+        else:
+            conn.execute("DELETE FROM crosswords WHERE id = ?", (cid,))
+            conn.commit()
+    finally:
+        conn.close()
+    return {"status": "ok"}
 
 FRONTEND = os.path.join(os.path.dirname(__file__), "..", "frontend")
 
