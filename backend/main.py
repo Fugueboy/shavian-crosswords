@@ -98,32 +98,30 @@ def get_crossword(cid: int, db: sqlite3.Connection = Depends(get_db)):
     return result
 
 @app.post("/api/crosswords", dependencies=[Depends(require_admin)])
-async def upload_crossword(file: UploadFile = File(...), db: sqlite3.Connection = Depends(get_db)):
+async def upload_crossword(file: UploadFile = File(...)):
     content = await file.read()
     try:
         puzzle = parse_crossword_xml(content)
     except Exception as e:
         raise HTTPException(400, f"Failed to parse XML: {e}")
 
-    db.execute(
-        "INSERT INTO crosswords (title, author, published, width, height, data) VALUES (?,?,?,?,?,?)",
-        (
-            puzzle["title"],
-            puzzle["author"],
-            datetime.utcnow().isoformat(),
-            puzzle["width"],
-            puzzle["height"],
-            json.dumps(puzzle),
-        ),
-    )
-    db.commit()
+    conn = sqlite3.connect(DB_PATH)
+    try:
+        conn.execute(
+            "INSERT INTO crosswords (title, author, published, width, height, data) VALUES (?,?,?,?,?,?)",
+            (
+                puzzle["title"],
+                puzzle["author"],
+                datetime.utcnow().isoformat(),
+                puzzle["width"],
+                puzzle["height"],
+                json.dumps(puzzle),
+            ),
+        )
+        conn.commit()
+    finally:
+        conn.close()
     return {"status": "ok", "title": puzzle["title"]}
-
-@app.delete("/api/crosswords/{cid}", dependencies=[Depends(require_admin)])
-def delete_crossword(cid: int, db: sqlite3.Connection = Depends(get_db)):
-    db.execute("DELETE FROM crosswords WHERE id = ?", (cid,))
-    db.commit()
-    return {"status": "ok"}
 
 # ---------------------------------------------------------------------------
 # Serve frontend
