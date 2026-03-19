@@ -514,8 +514,10 @@ _sink.style.cssText = 'position:absolute;top:0;left:0;width:2px;height:2px;opaci
 document.body.appendChild(_sink);
 
 function focusHiddenInput() {
-  if (window.innerWidth <= 750) return;
+  const scrollX = window.scrollX;
+  const scrollY = window.scrollY;
   _sink.focus({ preventScroll: true });
+  window.scrollTo(scrollX, scrollY);
   _sink.value = '';
 }
 
