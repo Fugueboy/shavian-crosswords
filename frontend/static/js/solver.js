@@ -322,9 +322,7 @@ function updateClueHighlight() {
   const li = document.querySelector(`.clue-item[data-wid="${wordId}"]`);
   if (li) {
     li.classList.add('active-clue');
-    // Only scroll clue into view on desktop — on mobile the clue panel is
-    // hidden and scrollIntoView causes the page to jerk
-    if (window.innerWidth > 750) {
+    if (window.innerWidth > 1024) {
       li.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     }
   }
