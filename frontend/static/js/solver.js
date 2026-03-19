@@ -358,20 +358,6 @@ function getActiveWordId() {
 }
 
 
-// Scroll active cell into view on mobile, accounting for virtual keyboard
-function scrollActiveCellIntoView() {
-  if (window.innerWidth > 750) return;
-  const el = activeCell && getCellEl(activeCell.x, activeCell.y);
-  if (!el) return;
-  const rect = el.getBoundingClientRect();
-  const vv = window.visualViewport;
-  const viewBottom = vv ? vv.offsetTop + vv.height : window.innerHeight;
-  const margin = 16;
-  if (rect.bottom > viewBottom - margin || rect.top < margin) {
-    const scrollTarget = window.scrollY + rect.top - viewBottom / 2;
-    window.scrollTo({ top: Math.max(0, scrollTarget), behavior: 'smooth' });
-  }
-}
 function onCellClick(x, y) {
   const cell = cellMap[key(x, y)];
   if (!cell || cell.type === 'block') return;
@@ -396,7 +382,6 @@ function onCellClick(x, y) {
   updateBanner();
   timerStart();
   focusHiddenInput();
-  scrollActiveCellIntoView();
 }
 
 function onClueClick(wordId) {
@@ -529,7 +514,7 @@ _sink.style.cssText = 'position:fixed;top:0;left:0;width:2px;height:2px;opacity:
 document.body.appendChild(_sink);
 
 function focusHiddenInput() {
-  _sink.focus();
+  _sink.focus({ preventScroll: true });
   _sink.value = '';
 }
 
@@ -789,10 +774,7 @@ async function init() {
   buildMaps();
   renderMeta();
   buildGrid();
-  // On mobile, re-scroll active cell into view when keyboard appears/resizes viewport
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', scrollActiveCellIntoView);
-  }
+
   buildClues();
   buildKeyboard();
   renderGridState();
