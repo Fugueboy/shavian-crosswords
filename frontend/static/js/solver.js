@@ -789,6 +789,10 @@ async function init() {
   buildMaps();
   renderMeta();
   buildGrid();
+  // On mobile, re-scroll active cell into view when keyboard appears/resizes viewport
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', scrollActiveCellIntoView);
+  }
   buildClues();
   buildKeyboard();
   renderGridState();
