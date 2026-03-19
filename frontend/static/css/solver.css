@@ -433,8 +433,10 @@
   .solver-layout { flex-direction: column; height: auto; overflow: visible; }
   .grid-panel { padding: 0.5rem; height: auto; overflow: visible; }
 
-  .site-header { position: sticky; top: 0; z-index: 100; }
-  .active-clue-banner { position: sticky; top: 56px; z-index: 50; }
+  .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
+  .solver-toolbar { position: fixed; top: 56px; left: 0; right: 0; z-index: 90; background: white; }
+  .active-clue-banner { position: fixed; top: 96px; left: 0; right: 0; z-index: 80; }
+  .solver-main { margin-top: 140px; }
 
   .clue-panel {
     width: 100%;
