@@ -510,7 +510,7 @@ _sink.setAttribute('autocomplete', 'off');
 _sink.setAttribute('autocorrect', 'off');
 _sink.setAttribute('autocapitalize', 'off');
 _sink.setAttribute('spellcheck', 'false');
-_sink.style.cssText = 'position:fixed;top:0;left:0;width:2px;height:2px;opacity:0.01;border:none;padding:0;margin:0;font-size:16px;z-index:-1;';
+_sink.style.cssText = 'position:fixed;top:25%;left:50%;width:2px;height:2px;opacity:0.01;border:none;padding:0;margin:0;font-size:16px;z-index:-1;';
 document.body.appendChild(_sink);
 
 function focusHiddenInput() {
