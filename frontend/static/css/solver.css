@@ -425,17 +425,22 @@
 
 .header-actions { display: flex; gap: 0.5rem; }
 
+.mobile-header { display: contents; }
+
 /* Mobile layout */
 @media (max-width: 750px) {
-  html, body { height: auto; overflow: auto; }
+  html { overflow: hidden; height: 100%; }
+  body { overflow-y: auto; height: 100%; }
   .solver-page { height: auto; overflow: visible; display: block; }
-  .solver-main { display: block; overflow: visible; height: auto; }
+  .solver-main { display: block; overflow: visible; height: auto; margin-top: 0; }
   .solver-layout { flex-direction: column; height: auto; overflow: visible; }
   .grid-panel { padding: 0.5rem; height: auto; overflow: visible; }
 
-  .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
-  .solver-toolbar { position: fixed; top: 56px; left: 0; right: 0; z-index: 90; background: white; }
-  .active-clue-banner { position: fixed; top: 96px; left: 0; right: 0; z-index: 80; }
+  .mobile-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
+  .site-header { position: static; }
+  .solver-toolbar { position: static; background: white; }
+  .active-clue-banner { position: static; }
+
   .solver-main { margin-top: 140px; }
 
   .clue-panel {
