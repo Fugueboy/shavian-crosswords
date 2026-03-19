@@ -41,7 +41,7 @@
   align-items: center;
   justify-content: center;
   overflow: auto;
-  padding: 1rem;
+  padding: 0.25rem;
   background: var(--paper);
 }
 
