@@ -442,7 +442,7 @@
     padding: 0.8rem;
   }
 
-  .grid-panel { flex-shrink: 0; padding: 0.1rem; align-items: flex-start; justify-content: center; }
+  .grid-panel { flex-shrink: 0; padding: 0.1rem; padding-top: 0.5rem; align-items: flex-start; justify-content: center; }
   .clue-item { font-size: 0.78rem; }
   .kb-key { width: 2rem; height: 2rem; font-size: 1rem; }
 
