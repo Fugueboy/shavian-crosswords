@@ -428,18 +428,13 @@
 /* Mobile layout */
 @media (max-width: 750px) {
   html, body { height: auto; overflow: auto; }
-
   .solver-page { height: auto; overflow: visible; display: block; }
-
-  .solver-toolbar { margin-bottom: 0; }
-
-  .active-clue-banner { position: sticky; top: 0; z-index: 50; }
-
   .solver-main { display: block; overflow: visible; height: auto; }
-
   .solver-layout { flex-direction: column; height: auto; overflow: visible; }
-
   .grid-panel { padding: 0.5rem; height: auto; overflow: visible; }
+
+  .site-header { position: sticky; top: 0; z-index: 100; }
+  .active-clue-banner { position: sticky; top: 56px; z-index: 50; }
 
   .clue-panel {
     width: 100%;
