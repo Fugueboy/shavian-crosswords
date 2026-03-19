@@ -431,8 +431,8 @@
 @media (max-width: 750px) {
   html { overflow: hidden; height: 100%; }
   body { overflow-y: auto; height: 100%; }
-  .solver-page { height: auto; overflow: visible; display: block; }
-  .solver-main { display: block; overflow: visible; height: auto; margin-top: 0; }
+  .solver-page { height: auto; overflow: visible !important; display: block; transform: none !important; }
+  .solver-main { display: block; overflow: visible; height: auto; }
   .solver-layout { flex-direction: column; height: auto; overflow: visible; }
   .grid-panel { padding: 0.5rem; height: auto; overflow: visible; }
 
