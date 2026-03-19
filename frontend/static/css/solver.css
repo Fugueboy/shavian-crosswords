@@ -427,7 +427,7 @@
 
 /* Mobile layout */
 @media (max-width: 750px) {
-  .active-clue-banner { order: 2; }
+  .active-clue-banner { order: 2; position: sticky; top: 0; z-index: 50; }
   .solver-main        { order: 3; }
   .solver-toolbar     { order: 1; }
 
