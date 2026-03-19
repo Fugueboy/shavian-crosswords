@@ -514,13 +514,7 @@ _sink.style.cssText = 'position:absolute;top:0;left:0;width:2px;height:2px;opaci
 document.body.appendChild(_sink);
 
 function focusHiddenInput() {
-  // Position the sink at the active cell so the browser scrolls to the right place
-  const el = activeCell && getCellEl(activeCell.x, activeCell.y);
-  if (el) {
-    const rect = el.getBoundingClientRect();
-    _sink.style.top  = (rect.top  + window.scrollY) + 'px';
-    _sink.style.left = (rect.left + window.scrollX) + 'px';
-  }
+  if (window.innerWidth <= 750) return;
   _sink.focus({ preventScroll: true });
   _sink.value = '';
 }
