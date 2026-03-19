@@ -445,6 +445,12 @@
   .grid-panel { flex-shrink: 0; padding: 0.5rem; }
   .clue-item { font-size: 0.78rem; }
   .kb-key { width: 2rem; height: 2rem; font-size: 1rem; }
+
+  .solver-toolbar { padding: 0.3rem 0.5rem; }
+  .toolbar-inner { gap: 0.3rem; flex-wrap: nowrap; }
+  .toolbar-group { gap: 0.25rem; }
+  .toolbar-group:not(:last-child)::after { display: none; }
+  .solver-toolbar .btn { padding: 0.35rem 0.55rem; font-size: 0.72rem; }
 }
 
 /* ── Pencil mode ──────────────────────────────────────────────────────────── */
