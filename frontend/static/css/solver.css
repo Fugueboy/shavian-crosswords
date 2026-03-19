@@ -425,23 +425,13 @@
 
 .header-actions { display: flex; gap: 0.5rem; }
 
-.mobile-header { display: block; }
-
 /* Mobile layout */
 @media (max-width: 750px) {
-  html { overflow: hidden; height: 100%; }
-  body { overflow-y: auto; height: 100%; }
-  .solver-page { height: auto; overflow: visible !important; display: block; transform: none !important; }
-  .solver-main { display: block; overflow: visible; height: auto; }
-  .solver-layout { flex-direction: column; height: auto; overflow: visible; }
-  .grid-panel { padding: 0.5rem; height: auto; overflow: visible; }
+  .active-clue-banner { order: 2; }
+  .solver-main        { order: 3; }
+  .solver-toolbar     { order: 1; }
 
-  .mobile-header { display: block; position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
-  .site-header { position: static; }
-  .solver-toolbar { position: static; background: white; }
-  .active-clue-banner { position: static; }
-
-  .solver-main { margin-top: 140px; }
+  .solver-layout { flex-direction: column; }
 
   .clue-panel {
     width: 100%;
@@ -452,6 +442,7 @@
     padding: 0.8rem;
   }
 
+  .grid-panel { flex-shrink: 0; padding: 0.5rem; }
   .clue-item { font-size: 0.78rem; }
   .kb-key { width: 2rem; height: 2rem; font-size: 1rem; }
 

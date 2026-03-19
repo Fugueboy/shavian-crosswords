@@ -322,7 +322,7 @@ function updateClueHighlight() {
   const li = document.querySelector(`.clue-item[data-wid="${wordId}"]`);
   if (li) {
     li.classList.add('active-clue');
-    if (window.innerWidth > 1024) {
+    if (window.innerWidth > 750) {
       li.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     }
   }
