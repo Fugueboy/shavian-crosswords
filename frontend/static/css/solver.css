@@ -427,9 +427,11 @@
 
 /* Mobile layout */
 @media (max-width: 750px) {
+  .solver-page { height: auto; overflow: visible; }
+
   .active-clue-banner { order: 2; position: fixed; top: 0; left: 0; right: 0; z-index: 50; }
-  .solver-main        { order: 3; padding-top: 2.4rem; }
   .solver-toolbar     { order: 1; }
+  .solver-main        { order: 3; margin-top: 2.6rem; }
 
   .solver-layout { flex-direction: column; }
 
