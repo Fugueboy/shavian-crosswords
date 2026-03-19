@@ -517,7 +517,7 @@ function focusHiddenInput() {
   const scrollX = window.scrollX;
   const scrollY = window.scrollY;
   _sink.focus({ preventScroll: true });
-  requestAnimationFrame(() => window.scrollTo(scrollX, scrollY));
+  requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(scrollX, scrollY)));
   _sink.value = '';
 }
 
