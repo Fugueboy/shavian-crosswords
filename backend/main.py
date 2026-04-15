@@ -22,12 +22,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-security = HTTPBasic()
+security = HTTPBasic(auto_error=False)
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 DB_PATH      = os.environ.get("DB_PATH", "crosswords.db")
 ADMIN_USER   = os.environ.get("ADMIN_USER", "admin")
-ADMIN_PASS   = os.environ.get("ADMIN_PASS", "shavian")
+ADMIN_PASS   = os.environ.get("ADMIN_PASS")
 
 USE_POSTGRES = bool(DATABASE_URL)
 
@@ -78,6 +78,14 @@ def init_db():
 init_db()
 
 def require_admin(credentials: HTTPBasicCredentials = Depends(security)):
+    if ADMIN_PASS is None:
+        return None
+    if credentials is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid credentials",
+            headers={"WWW-Authenticate": "Basic"},
+        )
     ok_user = secrets.compare_digest(credentials.username, ADMIN_USER)
     ok_pass = secrets.compare_digest(credentials.password, ADMIN_PASS)
     if not (ok_user and ok_pass):
