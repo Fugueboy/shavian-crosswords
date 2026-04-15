@@ -28,6 +28,7 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 DB_PATH      = os.environ.get("DB_PATH", "crosswords.db")
 ADMIN_USER   = os.environ.get("ADMIN_USER", "admin")
 ADMIN_PASS   = os.environ.get("ADMIN_PASS", "shavian")
+print(f"DEBUG: ADMIN_PASS at startup = '{ADMIN_PASS}'")
 
 USE_POSTGRES = bool(DATABASE_URL)
 
