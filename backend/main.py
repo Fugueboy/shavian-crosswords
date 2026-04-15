@@ -79,6 +79,7 @@ def init_db():
 init_db()
 
 def require_admin(credentials: HTTPBasicCredentials = Depends(security)):
+    print(f"DEBUG: require_admin called with credentials")
     print(f"DEBUG: Received credentials - username='{credentials.username}', password='{credentials.password}'")
     print(f"DEBUG: Expected credentials - ADMIN_USER='{ADMIN_USER}', ADMIN_PASS='{ADMIN_PASS}'")
     print(f"DEBUG: Username match: {secrets.compare_digest(credentials.username, ADMIN_USER)}")
@@ -138,6 +139,7 @@ def get_crossword(cid: int):
 
 @app.post("/api/crosswords", dependencies=[Depends(require_admin)])
 async def upload_crossword(file: UploadFile = File(...)):
+    print(f"DEBUG: POST /api/crosswords called")
     content = await file.read()
     try:
         puzzle = parse_crossword_xml(content)
