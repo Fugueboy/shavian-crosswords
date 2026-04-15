@@ -79,6 +79,10 @@ def init_db():
 init_db()
 
 def require_admin(credentials: HTTPBasicCredentials = Depends(security)):
+    print(f"DEBUG: Received credentials - username='{credentials.username}', password='{credentials.password}'")
+    print(f"DEBUG: Expected credentials - ADMIN_USER='{ADMIN_USER}', ADMIN_PASS='{ADMIN_PASS}'")
+    print(f"DEBUG: Username match: {secrets.compare_digest(credentials.username, ADMIN_USER)}")
+    print(f"DEBUG: Password match: {secrets.compare_digest(credentials.password, ADMIN_PASS)}")
     ok_user = secrets.compare_digest(credentials.username, ADMIN_USER)
     ok_pass = secrets.compare_digest(credentials.password, ADMIN_PASS)
     if not (ok_user and ok_pass):
